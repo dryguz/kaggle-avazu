@@ -2,4 +2,3 @@
 kaggle-avazu
 
 exercise project - implementation of TFX pipeline
-~~~~
