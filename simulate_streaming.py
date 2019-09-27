@@ -4,28 +4,30 @@ import datetime
 import argparse
 
 
-root_folder = 'data/split_by_date'
-days = os.listdir(root_folder)
-days_and_hours = []
+def list_days_and_hours(folder):
 
-for day in days:
-    day_path = os.path.join(root_folder, day)
-    hours = os.listdir(day_path)
-    days_and_hours += [os.path.join(day_path, hour) for hour in hours]
+    if not os.path.isdir(folder):
+        os.makedirs(folder)
 
-days_and_hours.sort()
+    days = os.listdir(folder)
+    days_and_hours = []
 
-ADD_EVERY_X_TIME = 1  # how many hours of data to add every x minutes to folder
+    for day in days:
+        day_path = os.path.join(folder, day)
+        hours = os.listdir(day_path)
+        days_and_hours += [os.path.join(day_path, hour) for hour in hours]
+    days_and_hours.sort()
+
+    return days_and_hours
 
 
-def copy_another_hour_of_data():
-    pass
+def copy_another_hour_of_data(root_folder, input_folder):
+    root_days_and_hours = list_days_and_hours(root_folder)
+    input_days_and_hours = list_days_and_hours(input_folder)
+    to_copy_list = list(set(root_days_and_hours) - set(input_days_and_hours))
+    to_copy_list.sort()
+    return to_copy_list[0]
 
-
-input_data_folder = os.path.join('data', 'input_data')
-
-if not os.path.isdir(input_data_folder):
-    os.makedirs(input_data_folder)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get number of seconds for copying next hour of input data')
@@ -38,7 +40,7 @@ if __name__ == '__main__':
     while True:
         t1 = datetime.datetime.now()
         if (t1 - t0).seconds // time_window > 0:
-            copy_another_hour_of_data()
+            copy_another_hour_of_data('data/split_by_date', 'data/input_data')
             t0 = datetime.datetime.now()
         else:
             time.sleep(600)
