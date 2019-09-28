@@ -2,10 +2,10 @@
 
 Exercise project for testing
 
-##Data preparation
+## Data preparation
 Data are provided in one big csv file. 
 [File description under this link](https://www.kaggle.com/c/avazu-ctr-prediction/data)
-###prepare_data.py
+### prepare_data.py
 Script splits the data by day and by hour.
 The results are folders with parquet files.
 
@@ -17,7 +17,7 @@ To run the script use command:
 python prepare_data.py --file train.csv
 ```
 
-###simulate_streamin.py 
+### simulate_streamin.py 
 Script simulate streaming by doing in a while loop, every x seconds:
 - checking content of root_folder = 'data/split_by_date/'
 - checking content of input_folder = 'data/input_data/'
