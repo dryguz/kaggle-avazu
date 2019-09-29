@@ -6,17 +6,19 @@ Exercise project for testing
 Data are provided in one big csv file. 
 [File description under this link](https://www.kaggle.com/c/avazu-ctr-prediction/data)
 ### prepare_data.py
-Script splits the data by day and by hour.
+Script splits the data in file "/data/file.csv" by day and by hour.
 The results are folders with parquet files.
+Source file needs to be in data folder, which is included in .gitignore
 
-Folder's schema is:
+Script output folder's schema is:
 "data=xxxx-xx-xx"/"hour=xx"/"parqets_files_with_random_string_name".
 
-To run the script use command:
+To run the script make sure train.csv is in /data folder, then use command:
 ```shell script
 python prepare_data.py --file train.csv
 ```
-To break enter "Ctrl-C"
+Wait until script finish with a print "Finished."
+If you want to break earlier enter "Ctrl-C".
 
 ### simulate_streaming.py 
 Script simulate streaming by doing in a while loop, every x seconds:
@@ -29,7 +31,8 @@ Running script with example parameters: will copy new hour of date every minute 
 ```shell script
 python simulate_streaming.py --tw 60 --sleep 15
 ```
-To break enter "Ctrl-C"
+Script will end when there is no more data to copy in dst folder. 
+If you want to break earlier enter "Ctrl-C".
 
 ### read_data.py
 Python code for 

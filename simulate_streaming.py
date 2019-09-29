@@ -3,6 +3,7 @@ import time
 import datetime
 import argparse
 import shutil
+import sys
 
 
 def list_days_and_hours(folder):
@@ -25,11 +26,14 @@ def copy_another_hour_of_data(root_folder, input_folder):
     root_days_and_hours = list_days_and_hours(root_folder)
     input_days_and_hours = list_days_and_hours(input_folder)
     to_copy_list = list(set(root_days_and_hours) - set(input_days_and_hours))
-    to_copy_list.sort()
-    src = os.path.join(root_folder, to_copy_list[0])
-    dst = os.path.join(input_folder, to_copy_list[0])
-    shutil.copytree(src=src, dst=dst)
-    return to_copy_list[0]
+    if len(to_copy_list) == 0:
+        return sys.exit()
+    else:
+        to_copy_list.sort()
+        src = os.path.join(root_folder, to_copy_list[0])
+        dst = os.path.join(input_folder, to_copy_list[0])
+        shutil.copytree(src=src, dst=dst)
+        return to_copy_list[0]
 
 
 if __name__ == '__main__':

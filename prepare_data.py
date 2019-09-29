@@ -39,3 +39,4 @@ if __name__ == '__main__':
 
     file = args.file
     split_date_file(file)
+    print('Finished.')
