@@ -25,7 +25,10 @@ def split_date_file(file):
             if not os.path.isdir(path):
                 os.makedirs(path)
             name = random_string(10)
-            file_path = os.path.join(path, name)
+            file_path = os.path.join(path, name+'.parquet')
+            sample = sample.astype({'hour': 'str'})
+            uint65_to_str = {i: 'str' for i in sample.dtypes[sample.dtypes == 'uint64'].index}
+            sample = sample.astype(uint65_to_str)
             sample.to_parquet(fname=file_path, engine='pyarrow', compression='snappy')
 
 
