@@ -29,7 +29,7 @@ Script simulate streaming by doing in a while loop, every x seconds:
 
 Running script with example parameters: will copy new hour of date every minute by checking every 0.25 of minute:
 ```shell script
-python simulate_streaming.py --tw 60 --sleep 15
+python simulate_streaming.py --tw 60 --sleep 30
 ```
 Script will end when there is no more data to copy in dst folder. 
 If you want to break earlier enter "Ctrl-C".

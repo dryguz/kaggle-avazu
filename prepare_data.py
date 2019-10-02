@@ -20,16 +20,15 @@ def split_date_file(file):
         grouped_sample = chunk.groupby('hour')
         for name, sample in grouped_sample:
             date = 'date={}'.format(name.date())
-            hour = 'hour={:02d}'.format(name.hour)
+            hour = 'time={:02d}'.format(name.hour)
             path = os.path.join('data', 'split_by_date', date, hour)
             if not os.path.isdir(path):
                 os.makedirs(path)
             name = random_string(10)
             file_path = os.path.join(path, name+'.parquet')
-            sample = sample.astype({'hour': 'str'})
             uint65_to_str = {i: 'str' for i in sample.dtypes[sample.dtypes == 'uint64'].index}
             sample = sample.astype(uint65_to_str)
-            sample.to_parquet(fname=file_path, engine='pyarrow', compression='snappy')
+            sample.to_parquet(fname=file_path, engine='pyarrow', compression='snappy', index=False)
 
 
 if __name__ == '__main__':
