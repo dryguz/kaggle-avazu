@@ -17,6 +17,9 @@ def split_date_file(file):
     reader = pd.read_csv(file_path, chunksize=30000)
     for chunk in reader:
         chunk.hour = pd.to_datetime(chunk.hour, format='%y%m%d%H')
+        str_types = {col: 'str' for col in chunk.columns if col not in ['click', 'hour']}
+        all_types = {'click': 'int', **str_types}
+        chunk = chunk.astype(all_types)
         grouped_sample = chunk.groupby('hour')
         for name, sample in grouped_sample:
             date = 'date={}'.format(name.date())
@@ -26,8 +29,6 @@ def split_date_file(file):
                 os.makedirs(path)
             name = random_string(10)
             file_path = os.path.join(path, name+'.parquet')
-            uint65_to_str = {i: 'str' for i in sample.dtypes[sample.dtypes == 'uint64'].index}
-            sample = sample.astype(uint65_to_str)
             sample.to_parquet(fname=file_path, engine='pyarrow', compression='snappy', index=False)
 
 

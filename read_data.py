@@ -60,7 +60,8 @@ input_data_schema = StructType(integer_types + date_types + timestamp_types + st
 # including schema from folder structure
 input_folder = 'data/input_data/'
 static_data = spark.read.parquet(input_folder)
-static_data = spark.read.schema(input_data_schema).parquet(input_folder)
+static_data = spark.read.option("mergeSchema", "true").parquet(input_folder)
+
 
 
 static_data = spark.read.schema(input_data_schema).format('parquet').load(input_folder)
@@ -69,6 +70,6 @@ static_data = spark.read.format('parquet').load(input_folder)
 # create a stream reader
 from pyspark.sql.functions import window
 stream_data = spark.readStream.schema(input_data_schema).parquet(input_folder)
-computed_data = (stream_data.groupBy(stream_data, window(stream_data['hour'], "1 hour")).count())
+id_counts = stream_data.groupBy(window(stream_data.hour, "1 hour", '5 minutes'), stream_data.id).count()
 
-computed_data.writeStream.format("console").outputMode("append").start().awaitTermination()
+id_counts.writeStream.format("console").outputMode("append").start().awaitTermination()
