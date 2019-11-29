@@ -1,15 +1,14 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as fun
 
-from utils.constans import timestamp_fields, date_fields, long_fields, string_fields
 from utils.constans import streaming_data_path
-from utils import define_schema
+from utils.utils import define_schema
 
 
 if __name__ == '__main___':
 
     spark = SparkSession.builder.appName('static').getOrCreate()
-    schema = define_schema(timestamp_fields, date_fields, long_fields, string_fields)
+    schema = define_schema()
     static_data = spark.read.option("mergeSchema", "true").schema(schema).parquet(streaming_data_path)
 
     # check no nulls
